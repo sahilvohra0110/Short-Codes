@@ -1,4 +1,91 @@
-Question no 05
+Question- Array.js
+
+function depth(arr) {
+    let maxDepth = 0;
+    let currentDepth = 0;
+
+    function traverse(arr) {
+      currentDepth++;
+      for (let i = 0; i < arr.length; i++) {
+        if (Array.isArray(arr[i])) {
+          traverse(arr[i]);
+        }
+      }
+      maxDepth = Math.max(maxDepth, currentDepth);
+      currentDepth--;
+    }
+
+    traverse(arr);
+    return maxDepth;
+  }
+  console.log(depth([1, 2, 3, 4]));
+  console.log(depth([1, [2, [3, 4]]]));
+
+Question- Binarysearch.js
+
+class Node {
+  constructor(id, name, marks) {
+    this.id = id;
+    this.name = name;
+    this.marks = marks;
+    // this.percentage = marks.reduce((a, b) => a + b) / marks.length;
+    this.left = null;
+    this.right = null;
+  }
+}
+
+class BinarySearchTree {
+  constructor() {
+    this.root = null;
+  }
+
+  insert(id, name, marks) {
+    let newNode = new Node(id, name, marks);
+    if (this.root === null) {
+      this.root = newNode;
+    } else {
+      this.insertNode(this.root, newNode);
+    }
+  }
+
+  insertNode(node, newNode) {
+    if (newNode.percentage < node.percentage) {
+      if (node.left === null) {
+        node.left = newNode;
+      } else {
+        this.insertNode(node.left, newNode);
+      }
+    } else {
+      if (node.right === null) {
+        node.right = newNode;
+      } else {
+        this.insertNode(node.right, newNode);
+      }
+    }
+  }
+
+  search(name) {
+    return this.searchNode(this.root, name);
+  }
+
+  searchNode(node, name) {
+    if (node === null) {
+      return null;
+    }
+    if (node.name === name) {
+      return node.marks;
+    }
+  }
+}
+
+let student = new BinarySearchTree();
+student.insert(1, "raju", 25);
+student.insert(1, "raja", 28);
+student.insert(1, "rajesh", 29);
+
+console.log(student);
+
+Question- Lifo.js
 
 class Stack {
   constructor() {
@@ -6,40 +93,148 @@ class Stack {
     this.queue2 = [];
   }
 
-  push(data) {
-    // Enqueue the data to the first queue
-    this.queue1.push(data);
+  push(element) {
+    this.queue1.push(element);
   }
 
   pop() {
-    // Check if the first queue is empty
-    if (this.queue1.length === 0) {
-      console.log("Stack is empty");
-      return;
-    }
-
-    // Dequeue all elements from the first queue except the last element and enqueue them to the second queue
     while (this.queue1.length > 1) {
       this.queue2.push(this.queue1.shift());
     }
-
-    // Dequeue the last element of the first queue
-    let last = this.queue1.shift();
-
-    // Swap the two queues
+    let top = this.queue1.shift();
     let temp = this.queue1;
     this.queue1 = this.queue2;
     this.queue2 = temp;
-
-    // Return the last element
-    return last;
+    return top;
   }
 }
 
-let stack = new Stack();
-stack.push(1);
-stack.push(2);
-stack.push(3);
-console.log(stack.pop()); // Output: 3
-console.log(stack.pop()); // Output: 2
-console.log(stack.pop()); // Output: 1
+Question- Reverselinkedlist.js
+
+class Node {
+  constructor(data) {
+    this.data = data;
+    this.next = null;
+  }
+}
+
+class LinkedList {
+  constructor() {
+    this.head = null;
+  }
+
+  addNode(data) {
+    let newNode = new Node(data);
+    if (this.head === null) {
+      this.head = newNode;
+    } else {
+      newNode.next = this.head;
+      this.head = newNode;
+    }
+  }
+
+  reverseList() {
+    let current = this.head;
+    let prev = null;
+    let next = null;
+
+    while (current) {
+      next = current.next;
+      current.next = prev;
+      prev = current;
+      current = next;
+    }
+    this.head = prev;
+  }
+
+  printList() {
+    let current = this.head;
+    while (current) {
+      console.log(current.data);
+      current = current.next;
+    }
+  }
+}
+
+let list = new LinkedList();
+list.addNode(1);
+list.addNode(2);
+list.addNode(3);
+list.addNode(4);
+console.log("Original List:")
+list.printList();
+list.reverseList();
+console.log("Reversed List:")
+list.printList();
+
+Question- Sortedlinkedlist.js
+
+class Node {
+    constructor(data) {
+      this.data = data;
+      this.next = null;
+    }
+  }
+
+  class LinkedList {
+    constructor() {
+      this.head = null;
+    }
+
+    addNode(data) {
+      let newNode = new Node(data);
+      if (this.head === null) {
+        this.head = newNode;
+      } else {
+        let current = this.head;
+        while (current.next) {
+          current = current.next;
+        }
+        current.next = newNode;
+      }
+    }
+
+    mergeLists(list1, list2) {
+      let dummyNode = new Node(0);
+      let current = dummyNode;
+      while (list1 && list2) {
+        if (list1.data < list2.data) {
+          current.next = list1;
+          list1 = list1.next;
+        } else {
+          current.next = list2;
+          list2 = list2.next;
+        }
+        current = current.next;
+      }
+      current.next = list1 || list2;
+      return dummyNode.next;
+    }
+
+    printList() {
+      let current = this.head;
+      while (current) {
+        console.log(current.data);
+        current = current.next;
+      }
+    }
+  }
+
+  let list1 = new LinkedList();
+  list1.addNode(2);
+  list1.addNode(1);
+  list1.addNode(3);
+
+  let list2 = new LinkedList();
+  list2.addNode(4);
+  list2.addNode(6);
+  list2.addNode(5);
+
+  console.log("List 1:");
+  list1.printList();
+  console.log("List 2:");
+  list2.printList();
+
+  let sortedList = new LinkedList();
+  sortedList.head = sortedList.mergeLists(list1.head, list2.head);
+  console.log("Sorted List:");
